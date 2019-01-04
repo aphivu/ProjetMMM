@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "354421071318",
+    "firebase_url": "https://projet-mmm-android.firebaseio.com",
+    "project_id": "projet-mmm-android",
+    "storage_bucket": "projet-mmm-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354421071318:android:e7bd5c253a4e769b",
+        "android_client_info": {
+          "package_name": "com.example.phi.projetmmm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354421071318-ikc0qkgi8tapun2se59f2ohgqj058iqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAumVuNNSr7nA6Rt1OplIa1AKhEmu_dK58"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

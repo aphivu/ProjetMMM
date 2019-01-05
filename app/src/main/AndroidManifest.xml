@@ -18,7 +18,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="your_key"/>
+            android:value="your_apikey"/>
 
         <activity
             android:name=".LoginActivity"
@@ -28,14 +28,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:label="Liste des évènements" />
-        <activity
-            android:name=".ProfilActivity"
-            android:label="Profil" />
         <activity android:name=".EvenementsActivity"
-            android:label="Evènements">
+            android:logo="@drawable/logo_fds_977233">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
     </application>
 

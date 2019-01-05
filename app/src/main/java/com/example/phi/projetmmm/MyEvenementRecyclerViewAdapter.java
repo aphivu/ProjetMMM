@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.phi.projetmmm.EvenementFragment.OnListFragmentInteractionListener;
 import com.example.phi.projetmmm.dummy.DummyContent.DummyItem;
+import com.example.phi.projetmmm.model.Evenement;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 
@@ -29,11 +30,12 @@ public class MyEvenementRecyclerViewAdapter extends RecyclerView.Adapter<MyEvene
     //private final List<DummyItem> mValues;
 
     private List<String> mTitles;
+    private List<Evenement> mEvenements;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyEvenementRecyclerViewAdapter(List<String> titles,
+    public MyEvenementRecyclerViewAdapter(List<Evenement> evenements,
             OnListFragmentInteractionListener listener) {
-        mTitles = titles;
+        mEvenements = evenements;
         mListener = listener;
     }
 
@@ -48,7 +50,8 @@ public class MyEvenementRecyclerViewAdapter extends RecyclerView.Adapter<MyEvene
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        holder.mCardText.setText(mTitles.get(position));
+        holder.mCardText.setText(mEvenements.get(position).getTitre());
+        holder.mEvenement = mEvenements.get(position);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +59,7 @@ public class MyEvenementRecyclerViewAdapter extends RecyclerView.Adapter<MyEvene
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.mEvenement);
                 }
             }
         });
@@ -64,13 +67,13 @@ public class MyEvenementRecyclerViewAdapter extends RecyclerView.Adapter<MyEvene
 
     @Override
     public int getItemCount() {
-        return mTitles.size();
+        return mEvenements.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public final View mView;
-        public DummyItem mItem;
+        public Evenement mEvenement;
 
         @BindView(R.id.card_text) TextView mCardText;
 

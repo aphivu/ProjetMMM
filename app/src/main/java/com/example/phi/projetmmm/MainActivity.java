@@ -1,8 +1,10 @@
 package com.example.phi.projetmmm;
 
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.phi.projetmmm.dummy.DummyContent;
+import com.example.phi.projetmmm.model.Evenement;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
@@ -30,7 +33,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements EvenementFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity
+        implements EvenementFragment.OnListFragmentInteractionListener, EvenementDetailsFragment.OnFragmentInteractionListener {
 ;
     private List<String> mKeys;
 
@@ -44,7 +48,24 @@ public class MainActivity extends AppCompatActivity implements EvenementFragment
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Evenement evenement) {
+
+        // Create fragment and give it an argument specifying the article it should show
+        EvenementDetailsFragment detailsFragment = new EvenementDetailsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("evenement",evenement);
+        detailsFragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.main_fragment_container, detailsFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
 
     }
 
@@ -76,4 +97,8 @@ public class MainActivity extends AppCompatActivity implements EvenementFragment
         }
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

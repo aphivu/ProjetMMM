@@ -1,9 +1,12 @@
 package com.example.phi.projetmmm.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
-public class Evenement {
+public class Evenement implements Parcelable {
 
     private String mTitre;
     private String mDescription;
@@ -16,6 +19,24 @@ public class Evenement {
         this.mDescription = mDescription;
         this.mId = mId;
     }
+
+    protected Evenement(Parcel in) {
+        mTitre = in.readString();
+        mDescription = in.readString();
+        mId = in.readString();
+    }
+
+    public static final Creator<Evenement> CREATOR = new Creator<Evenement>() {
+        @Override
+        public Evenement createFromParcel(Parcel in) {
+            return new Evenement(in);
+        }
+
+        @Override
+        public Evenement[] newArray(int size) {
+            return new Evenement[size];
+        }
+    };
 
     public String getTitre() {
         return mTitre;
@@ -39,5 +60,18 @@ public class Evenement {
 
     public void setId(String mId) {
         this.mId = mId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getTitre());
+        dest.writeString(getDescription());
+        dest.writeString(getId());
+
     }
 }

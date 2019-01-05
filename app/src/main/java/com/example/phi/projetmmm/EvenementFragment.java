@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.phi.projetmmm.dummy.DummyContent;
 import com.example.phi.projetmmm.dummy.DummyContent.DummyItem;
+import com.example.phi.projetmmm.model.Evenement;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +37,8 @@ public class EvenementFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    private ArrayList<String> mEvenements;
+    //private ArrayList<String> mEvenements;
+    private ArrayList<Evenement> mEvenements;
     private List<String> mKeys;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
@@ -112,7 +114,7 @@ public class EvenementFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Evenement evenement);
     }
 
     private void setupFirebase(final View view){
@@ -129,8 +131,9 @@ public class EvenementFragment extends Fragment {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
 
                     String title = snapshot.child("fields/titre_fr").getValue().toString();
-                    //Log.d("Test",title);
-                    mEvenements.add(title);
+                    String description = snapshot.child("fields/description_fr").getValue().toString();
+                    String id = snapshot.child("fields/identifiant").getValue().toString();
+                    mEvenements.add(new Evenement(title,description,id));
                     mKeys.add(snapshot.getKey());
                 }
 

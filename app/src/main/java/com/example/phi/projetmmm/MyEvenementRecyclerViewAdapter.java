@@ -7,12 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.phi.projetmmm.EvenementFragment.OnListFragmentInteractionListener;
-import com.example.phi.projetmmm.dummy.DummyContent.DummyItem;
-import com.example.phi.projetmmm.model.Evenement;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DatabaseReference;
 
-import org.w3c.dom.Text;
+import com.example.phi.projetmmm.model.Evenement;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +17,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyEvenementRecyclerViewAdapter extends RecyclerView.Adapter<MyEvenementRecyclerViewAdapter.ViewHolder> {
 
-    //private final List<DummyItem> mValues;
-
-    private List<String> mTitles;
     private List<Evenement> mEvenements;
     private final OnListFragmentInteractionListener mListener;
 
@@ -84,5 +73,9 @@ public class MyEvenementRecyclerViewAdapter extends RecyclerView.Adapter<MyEvene
             mView = view;
         }
 
+    }
+
+    public void setEvenements(ArrayList<Evenement> evenements){
+        this.mEvenements = evenements;
     }
 }

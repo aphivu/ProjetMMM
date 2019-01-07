@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.phi.projetmmm.model.Evenement;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -20,6 +21,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,12 +75,9 @@ public class MapFragment extends Fragment {
                     // Show rationale and request permission.
                 }
 
-                // For dropping a marker at a point on the Map
-                LatLng paris = new LatLng(48, 2);
-                googleMap.addMarker(new MarkerOptions().position(paris).title("Paris").snippet("Marker Description"));
-
+                LatLng france = new LatLng(48, 2);
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(paris).zoom(6).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(france).zoom(6).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
@@ -108,6 +108,25 @@ public class MapFragment extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    public void addCityMarker(final ArrayList<Evenement> evenements){
+        if (mMapView != null){
+            mMapView.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap mMap) {
+                    googleMap = mMap;
+
+                    // For dropping a marker at a point on the Map
+                    for(Evenement e: evenements){
+                        LatLng marker = new LatLng(e.getLieu().getLatitude(),e.getLieu().getLongitude());
+                        //System.out.println("lat: " + e.getLieu().getLatitude());
+                        googleMap.addMarker(new MarkerOptions().position(marker).title(e.getTitre()));
+                    }
+
+                }
+            });
+        }
     }
 
 }

@@ -16,9 +16,13 @@ import android.widget.Toast;
 
 import com.example.phi.projetmmm.model.Evenement;
 
+import java.util.ArrayList;
+
 
 public class EvenementFrameLayoutFragment extends Fragment
         implements EvenementFragment.OnListFragmentInteractionListener {
+
+    private EvenementFragment evenementFragment;
 
     public EvenementFrameLayoutFragment() {
         // Required empty public constructor
@@ -47,17 +51,12 @@ public class EvenementFrameLayoutFragment extends Fragment
                 return view;
             }
 
-            System.out.println("Evenement List");
-            // Create a new Fragment to be placed in the activity layout
-            EvenementFragment evenementFragment = new EvenementFragment();
 
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
-            evenementFragment.setArguments(getActivity().getIntent().getExtras());
-
-            // Add the fragment to the 'fragment_container' FrameLayout
+            IndeterminateFragment indeterminateFragment = new IndeterminateFragment();
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.evenement_container, evenementFragment).commit();
+                    .add(R.id.evenement_container,indeterminateFragment).commit();
+            //getActivity().getSupportFragmentManager().beginTransaction()
+                   // .add(R.id.evenement_container, evenementFragment,"evenement_fragment_tag").commit();
         }
 
         return view;
@@ -76,8 +75,22 @@ public class EvenementFrameLayoutFragment extends Fragment
         transaction.replace(R.id.evenement_container, evenementDetailsFragment);
         transaction.addToBackStack(null);
 
-// Commit the transaction
         transaction.commit();
+
+    }
+
+
+    public void setDataFetched(ArrayList<Evenement> evenements){
+
+        evenementFragment = new EvenementFragment();
+
+        evenementFragment.setArguments(getActivity().getIntent().getExtras());
+        evenementFragment.setArguments(getArguments());
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.evenement_container, evenementFragment,"evenement_fragment_tag").commit();
+
+        //evenementFragment.setEvenements(evenements);
 
     }
 

@@ -14,4 +14,10 @@
         app:showAsAction="always"
         android:title="filter"/>
 
+    <item
+        android:id="@+id/logout_action"
+        android:icon="@drawable/icons8_exit_512"
+        app:showAsAction="always"
+        android:title="action_logout"/>
+
 </menu>

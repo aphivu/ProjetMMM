@@ -11,14 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.phi.projetmmm.dummy.DummyContent;
-import com.example.phi.projetmmm.dummy.DummyContent.DummyItem;
 import com.example.phi.projetmmm.model.Evenement;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +24,14 @@ public class EvenementFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
 
     private ArrayList<Evenement> mEvenements;
-    private List<String> mKeys;
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+
+    private View view;
+    private MyEvenementRecyclerViewAdapter adapter;
 
     public EvenementFragment() {
+
     }
+
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
@@ -55,20 +50,16 @@ public class EvenementFragment extends Fragment {
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mEvenements = getArguments().getParcelableArrayList("evenements_liste");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_evenement_list, container, false);
+        view = inflater.inflate(R.layout.fragment_evenement_list, container, false);
 
-        //Read values
-        database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference();
-        setupFirebase(view);
-
-
+        setupRecyclerView();
         return view;
     }
 
@@ -95,47 +86,27 @@ public class EvenementFragment extends Fragment {
         void onListFragmentInteraction(Evenement evenement);
     }
 
-    private void setupFirebase(final View view){
+    private void setupRecyclerView(){
 
-        mEvenements = new ArrayList<>();
-        mKeys = new ArrayList<>();
-
-        // Read from the database
-        databaseReference.limitToFirst(1000).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-
-                    String title = snapshot.child("fields/titre_fr").getValue().toString();
-                    String description = snapshot.child("fields/description_fr").getValue().toString();
-                    String id = snapshot.child("fields/identifiant").getValue().toString();
-                    mEvenements.add(new Evenement(title,description,id));
-                    mKeys.add(snapshot.getKey());
-                }
-
-                // Set the adapter
-                if (view instanceof RecyclerView) {
-                    Context context = view.getContext();
-                    RecyclerView recyclerView = (RecyclerView) view;
-                    if (mColumnCount <= 1) {
-                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                    } else {
-                        recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-                    }
-                    recyclerView.setAdapter(new MyEvenementRecyclerViewAdapter(mEvenements, mListener));
-
-                }
-
+        adapter = new MyEvenementRecyclerViewAdapter(getArguments().<Evenement>getParcelableArrayList("evenement_list"),mListener);
+        // Set the adapter
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+            if (mColumnCount <= 1) {
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+            recyclerView.setAdapter(adapter);
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("Test", "Failed to read value.", error.toException());
-            }
-        });
+        }
 
+    }
+
+
+    public void setEvenements(ArrayList<Evenement> evenements){
+        this.mEvenements = evenements;
+        adapter.notifyDataSetChanged();
     }
 }

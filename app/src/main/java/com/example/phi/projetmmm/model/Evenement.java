@@ -5,12 +5,17 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.Date;
+
 @IgnoreExtraProperties
 public class Evenement implements Parcelable {
 
     private String mTitre;
     private String mDescription;
     private String mId;
+
+    private Lieu mLieu;
+
 
     public Evenement(){}
 
@@ -24,6 +29,7 @@ public class Evenement implements Parcelable {
         mTitre = in.readString();
         mDescription = in.readString();
         mId = in.readString();
+        mLieu = in.readParcelable(Lieu.class.getClassLoader());
     }
 
     public static final Creator<Evenement> CREATOR = new Creator<Evenement>() {
@@ -62,6 +68,14 @@ public class Evenement implements Parcelable {
         this.mId = mId;
     }
 
+    public Lieu getLieu() {
+        return mLieu;
+    }
+
+    public void setLieu(Lieu mLieu) {
+        this.mLieu = mLieu;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -72,6 +86,7 @@ public class Evenement implements Parcelable {
         dest.writeString(getTitre());
         dest.writeString(getDescription());
         dest.writeString(getId());
+        dest.writeParcelable(getLieu(),flags);
 
     }
 }

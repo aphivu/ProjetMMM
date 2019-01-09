@@ -55,8 +55,6 @@ public class EvenementFrameLayoutFragment extends Fragment
             IndeterminateFragment indeterminateFragment = new IndeterminateFragment();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .add(R.id.evenement_container,indeterminateFragment).commit();
-            //getActivity().getSupportFragmentManager().beginTransaction()
-                   // .add(R.id.evenement_container, evenementFragment,"evenement_fragment_tag").commit();
         }
 
         return view;

@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.phi.projetmmm.model.Evenement;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +25,10 @@ public class EvenementDetailsFragment extends Fragment {
 
     @BindView(R.id.details_description_value) TextView mDescription;
 
-    @BindView(R.id.details_identifiant_value) TextView mIdentifiant;
+    //@BindView(R.id.details_identifiant_value) TextView mIdentifiant;
+
+    @BindView(R.id.evenement_image)
+    ImageView mImageView;
 
     public EvenementDetailsFragment() {
         // Required empty public constructor
@@ -32,11 +37,6 @@ public class EvenementDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-            mEvenement = getArguments().getParcelable("evenement");
-        }
-
 
     }
 
@@ -48,15 +48,24 @@ public class EvenementDetailsFragment extends Fragment {
         ButterKnife.bind(this,view);
         // Inflate the layout for this fragment
 
+        if (getArguments() != null) {
+
+            mEvenement = getArguments().getParcelable("evenement");
+        } else {
+            mEvenement = new Evenement();
+        }
+
 
         mTitle.setText(mEvenement.getTitre());
         mDescription.setText(mEvenement.getDescription());
-        mIdentifiant.setText(mEvenement.getId());
+        //mIdentifiant.setText(mEvenement.getId());
+        if (mEvenement.getUrlImage() != null){
+            Picasso.get().load(mEvenement.getUrlImage()).fit().centerCrop().into(mImageView);
+        }
+
 
         return view;
     }
-
-
 
 
 }

@@ -87,6 +87,18 @@ public class EvenementsActivity extends AppCompatActivity
 
     }
 
+    /**
+     * In Order to avoid Failed Binder Transaction exception
+     * when starting Map application
+     * We dont keep saved instance state
+     * @param outState to clear
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.clear();
+    }
+
 
     /**
      * Initialisation du view pager avec les tabs désirées
@@ -102,6 +114,7 @@ public class EvenementsActivity extends AppCompatActivity
         containerEvenement.setArguments(args);
         profilFragment = new ProfilFragment();
         mapFragment = new MapFragment();
+       // mapFragment.setArguments(args);
 
         adapter.addFragment(profilFragment,"Profil");
         adapter.addFragment(containerEvenement,"Evènements");
@@ -267,25 +280,25 @@ public class EvenementsActivity extends AppCompatActivity
                         snapshot.child("fields/departement").getValue().toString() : "inconnu";
 
                     String region = snapshot.hasChild("fields/region") ?
-                        snapshot.child("fields/region").getValue().toString() : "non";
+                        snapshot.child("fields/region").getValue().toString() : "inconnu";
+
+                    String image = snapshot.hasChild("fields/image") ?
+                            snapshot.child("fields/image").getValue().toString() : "";
 
                     double lat = (double) snapshot.child("fields/geolocalisation/0").getValue();
                     double longi = (double) snapshot.child("fields/geolocalisation/1").getValue();
 
                     Lieu lieu = new Lieu(ville,departement,region,longi,lat);
-                    Evenement evenement = new Evenement(title,description,id);
+                    Evenement evenement = new Evenement(title,description,id,image);
                     evenement.setLieu(lieu);
 
                     mEvenements.add(evenement);
                 }
 
-                //EvenementFragment evenementFragment =
-                        //(EvenementFragment) getSupportFragmentManager().findFragmentByTag("evenement_fragment_tag");
-
-                //evenementFragment.setEvenements(mEvenements);
                 containerEvenement.setDataFetched(mEvenements);
+                mapFragment.setEvenements(mEvenements);
 
-                mapFragment.addCityMarker(mEvenements);
+                //mapFragment.addCityMarker();
             }
 
             @Override
@@ -323,4 +336,15 @@ public class EvenementsActivity extends AppCompatActivity
                 .show();
     }
 
+
+    public void setViewPager(String titre){
+        viewPager.setCurrentItem(1);
+        for(Evenement e : mEvenements){
+            if (e.getTitre().equals(titre)){
+                onListFragmentInteraction(e);
+                return;
+            }
+        }
+
+    }
 }

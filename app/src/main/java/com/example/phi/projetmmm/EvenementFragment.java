@@ -32,9 +32,6 @@ public class EvenementFragment extends Fragment {
 
     }
 
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static EvenementFragment newInstance(int columnCount) {
         EvenementFragment fragment = new EvenementFragment();
         Bundle args = new Bundle();

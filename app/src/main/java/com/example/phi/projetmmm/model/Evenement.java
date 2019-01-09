@@ -13,16 +13,18 @@ public class Evenement implements Parcelable {
     private String mTitre;
     private String mDescription;
     private String mId;
+    private String mUrlImage;
 
     private Lieu mLieu;
 
 
     public Evenement(){}
 
-    public Evenement(String mTitre, String mDescription, String mId) {
+    public Evenement(String mTitre, String mDescription, String mId, String mUriImage) {
         this.mTitre = mTitre;
         this.mDescription = mDescription;
         this.mId = mId;
+        this.mUrlImage = mUriImage;
     }
 
     protected Evenement(Parcel in) {
@@ -30,6 +32,7 @@ public class Evenement implements Parcelable {
         mDescription = in.readString();
         mId = in.readString();
         mLieu = in.readParcelable(Lieu.class.getClassLoader());
+        mUrlImage = in.readString();
     }
 
     public static final Creator<Evenement> CREATOR = new Creator<Evenement>() {
@@ -76,6 +79,14 @@ public class Evenement implements Parcelable {
         this.mLieu = mLieu;
     }
 
+    public String getUrlImage() {
+        return mUrlImage;
+    }
+
+    public void setUrlImage(String mUriImage) {
+        this.mUrlImage = mUriImage;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -86,6 +97,7 @@ public class Evenement implements Parcelable {
         dest.writeString(getTitre());
         dest.writeString(getDescription());
         dest.writeString(getId());
+        dest.writeString(getUrlImage());
         dest.writeParcelable(getLieu(),flags);
 
     }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,9 +33,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,7 +46,7 @@ import butterknife.ButterKnife;
 public class EvenementsActivity extends AppCompatActivity
         implements ProfilFragment.OnFragmentInteractionListener,
         EvenementFragment.OnListFragmentInteractionListener,
-        SearchView.OnQueryTextListener{
+        SearchView.OnQueryTextListener {
 
 
     //Bind activity layout
@@ -318,24 +321,35 @@ public class EvenementsActivity extends AppCompatActivity
     }
 
     private void displayFilterDialog(){
-        new AlertDialog.Builder(this)
-                .setTitle("Nuke planet Jupiter?")
-                .setMessage("Note that nuking planet Jupiter will destroy everything in there.")
-                .setPositiveButton("Nuke", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("MainActivity", "Sending atomic bombs to Jupiter");
-                    }
-                })
-                .setNegativeButton("Abort", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("MainActivity", "Aborting mission...");
-                    }
-                })
-                .show();
+
+        FragmentManager fm = getSupportFragmentManager();
+        FilterFragment filterFragment = FilterFragment.newInstance();
+        filterFragment.show(fm,"filter_fragment");
+
     }
 
+
+    public void filterData(String region, String date) {
+        Toast.makeText(this,"Region: " +region + " date: "+ date,Toast.LENGTH_LONG).show();
+        Query query = databaseReference.orderByChild("fields/region").equalTo(region);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    List<String> value = new ArrayList<>();
+                    for(DataSnapshot issue :dataSnapshot.getChildren()){
+                        value.add(issue.child("fields/region").getValue().toString());
+                    }
+                    System.out.println("Size Test: " + value.size());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("Test", "Failed to read value.", databaseError.toException());
+            }
+        });
+    }
 
     public void setViewPager(String titre){
         viewPager.setCurrentItem(1);

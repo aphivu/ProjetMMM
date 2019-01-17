@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="regions_array">
+        <item></item>
+        <item>Grand Est</item>
+        <item>Aquitaine</item>
+        <item>Auvergne-Rhône-Alpes</item>
+        <item>Bourgogne-Franche-Comté</item>
+        <item>Bretagne</item>
+        <item>Centre-Val de Loire</item>
+        <item>Corse</item>
+        <item>Île-de-France</item>
+        <item>Provence-Alpes-Côte d\'Azur</item>
+        <item>Hauts-de-France</item>
+        <item>Normandie</item>
+        <item>Occitanie</item>
+        <item>Pays de la Loire</item>
+        <item>Nouvelle-Aquitaine</item>
+    </string-array>
+</resources>

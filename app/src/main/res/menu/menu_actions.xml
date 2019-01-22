@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/filter_action"
-        android:icon="@drawable/baseline_tune_white_24dp"
+        android:icon="@drawable/filter"
         app:showAsAction="always"
         android:title="filter"/>
 

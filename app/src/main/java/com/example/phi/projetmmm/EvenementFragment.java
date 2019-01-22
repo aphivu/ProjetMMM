@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import com.example.phi.projetmmm.model.Evenement;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class EvenementFragment extends Fragment {
 
@@ -104,6 +102,8 @@ public class EvenementFragment extends Fragment {
 
     public void setEvenements(ArrayList<Evenement> evenements){
         this.mEvenements = evenements;
+        adapter.setEvenements(this.mEvenements);
         adapter.notifyDataSetChanged();
+        System.out.println("notifyChanged");
     }
 }

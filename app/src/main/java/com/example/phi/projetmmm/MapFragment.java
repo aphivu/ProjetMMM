@@ -145,6 +145,7 @@ public class MapFragment extends Fragment implements
     public void addCityMarker(){
 
         if (mMapView != null) {
+            googleMap.clear();
             for (Evenement e : mEvenements) {
                 LatLng marker = new LatLng(e.getLieu().getLatitude(), e.getLieu().getLongitude());
                 //System.out.println("lat: " + e.getLieu().getLatitude());

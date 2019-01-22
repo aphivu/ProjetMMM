@@ -270,7 +270,7 @@ public class EvenementsActivity extends AppCompatActivity
                 // whenever data at this location is updated.
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
 
-                    String title = snapshot.child("fields/titre_fr").getValue().toString();
+                   /* String title = snapshot.child("fields/titre_fr").getValue().toString();
                     String description = snapshot.child("fields/description_fr").getValue().toString();
                     String id = snapshot.child("fields/identifiant").getValue().toString();
                     String adresse = snapshot.child("fields/adresse").getValue().toString();
@@ -293,9 +293,9 @@ public class EvenementsActivity extends AppCompatActivity
 
                     Lieu lieu = new Lieu(ville,departement,region,longi,lat);
                     Evenement evenement = new Evenement(title,description,id,image);
-                    evenement.setLieu(lieu);
+                    evenement.setLieu(lieu);*/
 
-                    mEvenements.add(evenement);
+                    mEvenements.add(snapshotToEvenement(snapshot));
                 }
 
                 containerEvenement.setDataFetched(mEvenements);
@@ -310,6 +310,36 @@ public class EvenementsActivity extends AppCompatActivity
                 Log.w("Test", "Failed to read value.", error.toException());
             }
         });
+    }
+
+    private Evenement snapshotToEvenement(DataSnapshot snapshot){
+
+        String title = snapshot.child("fields/titre_fr").getValue().toString();
+        String description = snapshot.child("fields/description_fr").getValue().toString();
+        String id = snapshot.child("fields/identifiant").getValue().toString();
+        String adresse = snapshot.child("fields/adresse").getValue().toString();
+
+
+        String ville = snapshot.hasChild("fields/ville") ?
+                snapshot.child("fields/ville").getValue().toString() : "inconnu";
+
+        String departement = snapshot.hasChild("fields/departement") ?
+                snapshot.child("fields/departement").getValue().toString() : "inconnu";
+
+        String region = snapshot.hasChild("fields/region") ?
+                snapshot.child("fields/region").getValue().toString() : "inconnu";
+
+        String image = snapshot.hasChild("fields/image") ?
+                snapshot.child("fields/image").getValue().toString() : "";
+
+        double lat = (double) snapshot.child("fields/geolocalisation/0").getValue();
+        double longi = (double) snapshot.child("fields/geolocalisation/1").getValue();
+
+        Lieu lieu = new Lieu(ville,departement,region,longi,lat);
+        Evenement evenement = new Evenement(title,description,id,image);
+        evenement.setLieu(lieu);
+
+        return evenement;
     }
 
     /**
@@ -330,17 +360,25 @@ public class EvenementsActivity extends AppCompatActivity
 
 
     public void filterData(String region, String date) {
-        Toast.makeText(this,"Region: " +region + " date: "+ date,Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"Region: " +region + " date: "+ date,Toast.LENGTH_LONG).show();
+
+        containerEvenement.setIndeterminate();
+
         Query query = databaseReference.orderByChild("fields/region").equalTo(region);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    List<String> value = new ArrayList<>();
+                    //List<String> value = new ArrayList<>();
+                    ArrayList<Evenement> filterEvenement = new ArrayList<>();
                     for(DataSnapshot issue :dataSnapshot.getChildren()){
-                        value.add(issue.child("fields/region").getValue().toString());
+                        //value.add(issue.child("fields/region").getValue().toString());
+                        filterEvenement.add(snapshotToEvenement(issue));
                     }
-                    System.out.println("Size Test: " + value.size());
+                    System.out.println("Size Test: " + filterEvenement.size());
+                    mEvenements = filterEvenement;
+                    containerEvenement.setDataFetched(mEvenements);
+                    mapFragment.setEvenements(mEvenements);
                 }
             }
 

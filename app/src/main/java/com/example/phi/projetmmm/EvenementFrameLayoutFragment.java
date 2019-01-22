@@ -47,9 +47,7 @@ public class EvenementFrameLayoutFragment extends Fragment
             }
 
 
-            IndeterminateFragment indeterminateFragment = new IndeterminateFragment();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.evenement_container,indeterminateFragment).commit();
+            setIndeterminate();
         }
 
         return view;
@@ -72,13 +70,28 @@ public class EvenementFrameLayoutFragment extends Fragment
 
     }
 
+    public void setIndeterminate(){
+        IndeterminateFragment indeterminateFragment = new IndeterminateFragment();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .add(R.id.evenement_container,indeterminateFragment).commit();
+
+    }
+
 
     public void setDataFetched(ArrayList<Evenement> evenements){
 
-        evenementFragment = new EvenementFragment();
+        if ( evenementFragment != null){
+            evenementFragment.setEvenements(evenements);
 
-        evenementFragment.setArguments(getActivity().getIntent().getExtras());
-        evenementFragment.setArguments(getArguments());
+
+        }
+        else {
+            evenementFragment = new EvenementFragment();
+
+            evenementFragment.setArguments(getActivity().getIntent().getExtras());
+            evenementFragment.setArguments(getArguments());
+        }
+
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.evenement_container, evenementFragment,"evenement_fragment_tag").commit();

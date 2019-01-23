@@ -28,6 +28,7 @@ import android.view.View;
 
 import com.example.phi.projetmmm.model.Evenement;
 import com.example.phi.projetmmm.model.Lieu;
+import com.example.phi.projetmmm.model.Note;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -270,38 +272,12 @@ public class EvenementsActivity extends AppCompatActivity
                 // whenever data at this location is updated.
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
 
-                   /* String title = snapshot.child("fields/titre_fr").getValue().toString();
-                    String description = snapshot.child("fields/description_fr").getValue().toString();
-                    String id = snapshot.child("fields/identifiant").getValue().toString();
-                    String adresse = snapshot.child("fields/adresse").getValue().toString();
-
-
-                    String ville = snapshot.hasChild("fields/ville") ?
-                        snapshot.child("fields/ville").getValue().toString() : "inconnu";
-
-                    String departement = snapshot.hasChild("fields/departement") ?
-                        snapshot.child("fields/departement").getValue().toString() : "inconnu";
-
-                    String region = snapshot.hasChild("fields/region") ?
-                        snapshot.child("fields/region").getValue().toString() : "inconnu";
-
-                    String image = snapshot.hasChild("fields/image") ?
-                            snapshot.child("fields/image").getValue().toString() : "";
-
-                    double lat = (double) snapshot.child("fields/geolocalisation/0").getValue();
-                    double longi = (double) snapshot.child("fields/geolocalisation/1").getValue();
-
-                    Lieu lieu = new Lieu(ville,departement,region,longi,lat);
-                    Evenement evenement = new Evenement(title,description,id,image);
-                    evenement.setLieu(lieu);*/
-
                     mEvenements.add(snapshotToEvenement(snapshot));
                 }
 
                 containerEvenement.setDataFetched(mEvenements);
                 mapFragment.setEvenements(mEvenements);
 
-                //mapFragment.addCityMarker();
             }
 
             @Override
@@ -317,8 +293,6 @@ public class EvenementsActivity extends AppCompatActivity
         String title = snapshot.child("fields/titre_fr").getValue().toString();
         String description = snapshot.child("fields/description_fr").getValue().toString();
         String id = snapshot.child("fields/identifiant").getValue().toString();
-        String adresse = snapshot.child("fields/adresse").getValue().toString();
-
 
         String ville = snapshot.hasChild("fields/ville") ?
                 snapshot.child("fields/ville").getValue().toString() : "inconnu";
@@ -331,12 +305,15 @@ public class EvenementsActivity extends AppCompatActivity
 
         String image = snapshot.hasChild("fields/image") ?
                 snapshot.child("fields/image").getValue().toString() : "";
+        Note note = snapshot.hasChild("fields/note") ?
+                 snapshot.child("fields/note").getValue(Note.class) : new Note();
 
         double lat = (double) snapshot.child("fields/geolocalisation/0").getValue();
         double longi = (double) snapshot.child("fields/geolocalisation/1").getValue();
 
         Lieu lieu = new Lieu(ville,departement,region,longi,lat);
-        Evenement evenement = new Evenement(title,description,id,image);
+        Evenement evenement = new Evenement(title,description,id,image,snapshot.getKey());
+        evenement.setNote(note);
         evenement.setLieu(lieu);
 
         return evenement;
@@ -369,10 +346,10 @@ public class EvenementsActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    //List<String> value = new ArrayList<>();
+
                     ArrayList<Evenement> filterEvenement = new ArrayList<>();
                     for(DataSnapshot issue :dataSnapshot.getChildren()){
-                        //value.add(issue.child("fields/region").getValue().toString());
+
                         filterEvenement.add(snapshotToEvenement(issue));
                     }
                     System.out.println("Size Test: " + filterEvenement.size());
@@ -398,5 +375,11 @@ public class EvenementsActivity extends AppCompatActivity
             }
         }
 
+    }
+
+    public void setRating(Evenement evenement){
+        Toast.makeText(this,"Votre note a été envoyé.",Toast.LENGTH_LONG).show();
+        DatabaseReference ref = database.getReference().child(evenement.getKey()).child("fields");
+        ref.updateChildren(evenement.getNote().toMap());
     }
 }

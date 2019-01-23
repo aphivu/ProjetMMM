@@ -4,14 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.phi.projetmmm.model.Evenement;
+import com.example.phi.projetmmm.model.Note;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -26,9 +33,20 @@ public class EvenementDetailsFragment extends Fragment {
     @BindView(R.id.details_description_value) TextView mDescription;
 
     //@BindView(R.id.details_identifiant_value) TextView mIdentifiant;
+    @BindView(R.id.ratingBarMean)
+    RatingBar mRatingBarMean;
 
     @BindView(R.id.evenement_image)
     ImageView mImageView;
+
+    @BindView(R.id.ratingBarUser)
+    RatingBar mRatinBarUser;
+
+    @BindView(R.id.button_rate)
+    Button mbuttonRate;
+
+    @BindView(R.id.textView_nVotes)
+    TextView mTextViewNVotes;
 
     public EvenementDetailsFragment() {
         // Required empty public constructor
@@ -37,7 +55,7 @@ public class EvenementDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -63,8 +81,33 @@ public class EvenementDetailsFragment extends Fragment {
             Picasso.get().load(mEvenement.getUrlImage()).fit().centerCrop().into(mImageView);
         }
 
+        mRatingBarMean.setRating(mEvenement.getNote().getMean());
+        mTextViewNVotes.setText(mEvenement.getNote().getNumber() + " votes");
+
+
+        mbuttonRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getActivity(),"rate: " + mRatinBarUser.getRating(),Toast.LENGTH_SHORT).show();
+                mEvenement.setRate(mRatinBarUser.getRating());
+                Note note = mEvenement.getNote();
+                note.setNumber(note.getNumber() + 1);
+                note.setMean(mRatinBarUser.getRating());
+                mEvenement.setNote(note);
+                EvenementsActivity evenementsActivity = (EvenementsActivity) getActivity();
+                if (evenementsActivity != null){
+                    evenementsActivity.setRating(mEvenement);
+                }
+            }
+        });
 
         return view;
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item=menu.findItem(R.id.action_fav);
+        item.setVisible(true);
     }
 
 

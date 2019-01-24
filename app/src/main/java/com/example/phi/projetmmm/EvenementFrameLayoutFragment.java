@@ -105,6 +105,7 @@ public class EvenementFrameLayoutFragment extends Fragment
     public Evenement getEvenement(){
 
         if (evenementDetailsFragment != null){
+            //System.out.println("Container getEvenement");
             evenementDetailsFragment.getEvenement();
         }
 

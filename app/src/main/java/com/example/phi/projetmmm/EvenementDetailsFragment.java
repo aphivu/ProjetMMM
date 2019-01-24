@@ -107,6 +107,21 @@ public class EvenementDetailsFragment extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item=menu.findItem(R.id.action_fav);
         item.setVisible(true);
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                /*String text= (mEvenement != null ) ? mEvenement.getTitre() : "even null";
+                Toast.makeText(getActivity(),text,Toast.LENGTH_LONG).show();*/
+
+                EvenementsActivity evenementsActivity = (EvenementsActivity) getActivity();
+                if (evenementsActivity != null){
+                    //evenementsActivity.setRating(mEvenement);
+                    evenementsActivity.insertEvenement(mEvenement);
+                }
+
+                return false;
+            }
+        });
     }
 
     public Evenement getEvenement(){

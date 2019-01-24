@@ -215,6 +215,14 @@ public class EvenementsActivity extends AppCompatActivity
 
         switch (item.getItemId()) {
 
+            case R.id.action_fav:
+                Evenement addFav = containerEvenement.getEvenement();
+                System.out.println("FAV IS CLICKED");
+                if(addFav != null){
+                    insertEvenement(addFav);
+                }
+                return true;
+
             case R.id.logout_action:
 
                 FirebaseAuth.getInstance().signOut();
@@ -381,5 +389,9 @@ public class EvenementsActivity extends AppCompatActivity
         Toast.makeText(this,"Votre note a été envoyé.",Toast.LENGTH_LONG).show();
         DatabaseReference ref = database.getReference().child(evenement.getKey()).child("fields");
         ref.updateChildren(evenement.getNote().toMap());
+    }
+
+    public void insertEvenement(Evenement evenement){
+        profilFragment.insert(evenement);
     }
 }

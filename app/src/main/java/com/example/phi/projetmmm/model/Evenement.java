@@ -1,45 +1,55 @@
 package com.example.phi.projetmmm.model;
 
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.Date;
 
 @IgnoreExtraProperties
+@Entity(tableName = "evenement_table")
 public class Evenement implements Parcelable {
 
-    private String mTitre;
-    private String mDescription;
-    private String mId;
-    private String mUrlImage;
-    private float mRate;
-    private String mkey;
+    private String titre;
+    private String description;
+    private String id;
+    private String urlImage;
+    private float rate;
 
-    private Lieu mLieu;
-    private Note mNote;
+    @PrimaryKey
+    @NonNull
+    private String key;
 
+    @Embedded
+    private Lieu lieu;
+
+    @Embedded
+    private Note note;
 
     public Evenement(){}
 
     public Evenement(String mTitre, String mDescription, String mId, String mUriImage, String mkey) {
-        this.mTitre = mTitre;
-        this.mDescription = mDescription;
-        this.mId = mId;
-        this.mUrlImage = mUriImage;
-        this.mkey = mkey;
+        this.titre = mTitre;
+        this.description = mDescription;
+        this.id = mId;
+        this.urlImage = mUriImage;
+        this.key = mkey;
     }
 
     protected Evenement(Parcel in) {
-        mTitre = in.readString();
-        mDescription = in.readString();
-        mId = in.readString();
-        mLieu = in.readParcelable(Lieu.class.getClassLoader());
-        mNote = in.readParcelable(Note.class.getClassLoader());
-        mUrlImage = in.readString();
-        mRate = in.readFloat();
-        mkey = in.readString();
+        titre = in.readString();
+        description = in.readString();
+        id = in.readString();
+        lieu = in.readParcelable(Lieu.class.getClassLoader());
+        note = in.readParcelable(Note.class.getClassLoader());
+        urlImage = in.readString();
+        rate = in.readFloat();
+        key = in.readString();
     }
 
     public static final Creator<Evenement> CREATOR = new Creator<Evenement>() {
@@ -55,63 +65,67 @@ public class Evenement implements Parcelable {
     };
 
     public String getTitre() {
-        return mTitre;
+        return titre;
     }
 
-    public void setTitre(String mTitre) {
-        this.mTitre = mTitre;
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
-    public void setDescription(String mDescription) {
-        this.mDescription = mDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getId() {
-        return mId;
+        return id;
     }
 
-    public void setId(String mId) {
-        this.mId = mId;
-    }
-
-    public Lieu getLieu() {
-        return mLieu;
-    }
-
-    public void setLieu(Lieu mLieu) {
-        this.mLieu = mLieu;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUrlImage() {
-        return mUrlImage;
+        return urlImage;
     }
 
-    public void setUrlImage(String mUriImage) {
-        this.mUrlImage = mUriImage;
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 
     public float getRate() {
-        return mRate;
+        return rate;
     }
 
-    public void setRate(float mRate) {
-        this.mRate = mRate;
+    public void setRate(float rate) {
+        this.rate = rate;
     }
 
-    public String getKey(){
-        return this.mkey;
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public Lieu getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(Lieu lieu) {
+        this.lieu = lieu;
     }
 
     public Note getNote() {
-        return mNote;
+        return note;
     }
 
-    public void setNote(Note mNote) {
-        this.mNote = mNote;
+    public void setNote(Note note) {
+        this.note = note;
     }
 
     @Override

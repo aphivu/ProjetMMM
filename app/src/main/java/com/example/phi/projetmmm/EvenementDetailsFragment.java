@@ -88,11 +88,10 @@ public class EvenementDetailsFragment extends Fragment {
         mbuttonRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(),"rate: " + mRatinBarUser.getRating(),Toast.LENGTH_SHORT).show();
-                mEvenement.setRate(mRatinBarUser.getRating());
+
                 Note note = mEvenement.getNote();
+                note.setMean((mRatinBarUser.getRating() + note.getMean() * note.getNumber()) / (note.getNumber() + 1));
                 note.setNumber(note.getNumber() + 1);
-                note.setMean(mRatinBarUser.getRating());
                 mEvenement.setNote(note);
                 EvenementsActivity evenementsActivity = (EvenementsActivity) getActivity();
                 if (evenementsActivity != null){
@@ -110,5 +109,8 @@ public class EvenementDetailsFragment extends Fragment {
         item.setVisible(true);
     }
 
+    public Evenement getEvenement(){
+        return mEvenement;
+    }
 
 }

@@ -19,6 +19,7 @@ public class EvenementFrameLayoutFragment extends Fragment
         implements EvenementFragment.OnListFragmentInteractionListener {
 
     private EvenementFragment evenementFragment;
+    private EvenementDetailsFragment evenementDetailsFragment;
 
     public EvenementFrameLayoutFragment() {
         // Required empty public constructor
@@ -57,7 +58,7 @@ public class EvenementFrameLayoutFragment extends Fragment
     @Override
     public void onListFragmentInteraction(Evenement evenement) {
 
-        EvenementDetailsFragment evenementDetailsFragment = new EvenementDetailsFragment();
+        evenementDetailsFragment = new EvenementDetailsFragment();
         Bundle args = new Bundle();
         args.putParcelable("evenement",evenement);
         evenementDetailsFragment.setArguments(args);
@@ -99,6 +100,15 @@ public class EvenementFrameLayoutFragment extends Fragment
 
         //evenementFragment.setEvenements(evenements);
 
+    }
+
+    public Evenement getEvenement(){
+
+        if (evenementDetailsFragment != null){
+            evenementDetailsFragment.getEvenement();
+        }
+
+        return null;
     }
 
 

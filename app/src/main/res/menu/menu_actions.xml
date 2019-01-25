@@ -11,7 +11,7 @@
     <item android:id="@+id/action_fav"
         app:showAsAction="always"
         android:title="action_fav"
-        android:icon="@drawable/star"
+        android:icon="@drawable/star_outline"
         android:visible="false"/>
     <item
         android:id="@+id/filter_action"

@@ -38,7 +38,7 @@ public class ProfilFragment extends Fragment {
     private ProfilAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private List<Evenement> mFavorites;
+    //private List<Evenement> mFavorites;
 
     private EvenementViewModel mViewModel;
 
@@ -111,7 +111,15 @@ public class ProfilFragment extends Fragment {
     }
 
     public void insert(Evenement evenement){
-        System.out.println("insert profil fragment");
+
         this.mViewModel.insert(evenement);
+    }
+
+    public void delete(Evenement evenement){
+        this.mViewModel.delete(evenement);
+    }
+
+    public Boolean isPresent(Evenement evenement){
+        return mViewModel.isPresent(evenement);
     }
 }

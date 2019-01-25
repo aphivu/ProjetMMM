@@ -393,5 +393,15 @@ public class EvenementsActivity extends AppCompatActivity
 
     public void insertEvenement(Evenement evenement){
         profilFragment.insert(evenement);
+        mapFragment.setEvenements(mEvenements);
+    }
+
+    public void deleteEvenement(Evenement evenement){
+        profilFragment.delete(evenement);
+        mapFragment.setEvenements(mEvenements);
+    }
+
+    public boolean isFavorite(Evenement evenement){
+        return profilFragment.isPresent(evenement);
     }
 }

@@ -28,6 +28,8 @@ public class EvenementRepository {
         new insertAsyncTask(mDao).execute(evenement);
     }
 
+    public void delete(Evenement evenement) {new deleteAsyncTask(mDao).execute(evenement); }
+
     public static class insertAsyncTask extends AsyncTask<Evenement, Void, Void> {
         private EvenementDAO mAsyncDao;
 
@@ -40,5 +42,18 @@ public class EvenementRepository {
             mAsyncDao.insert(params[0]);
             return null;
         }
+    }
+
+    public static class deleteAsyncTask extends AsyncTask<Evenement, Void, Void> {
+        private EvenementDAO mAsyncDao;
+
+        deleteAsyncTask(EvenementDAO dao) { mAsyncDao = dao; }
+
+        @Override
+        protected Void doInBackground(final Evenement ... params) {
+            mAsyncDao.delete(params[0]);
+            return null;
+        }
+
     }
 }

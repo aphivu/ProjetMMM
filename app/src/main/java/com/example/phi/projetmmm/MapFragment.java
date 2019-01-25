@@ -16,12 +16,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +49,9 @@ public class MapFragment extends Fragment implements
     private GoogleMap googleMap;
 
     private Marker mSelected;
+
+    List<Marker> mMarkers;
+    List<Marker> mFavorites;
 
     public MapFragment() {}
 
@@ -131,7 +136,8 @@ public class MapFragment extends Fragment implements
         CameraPosition cameraPosition = new CameraPosition.Builder().target(france).zoom(6).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        //addCityMarker();
+        Toast.makeText(getActivity(),"Map is ready",Toast.LENGTH_LONG).show();
+        addCityMarker();
 
         this.googleMap.setOnMarkerClickListener(this);
         this.googleMap.setOnInfoWindowCloseListener(this);
@@ -145,14 +151,25 @@ public class MapFragment extends Fragment implements
     public void addCityMarker(){
 
         if (mMapView != null) {
+            mMarkers = new ArrayList<>();
+            mFavorites = new ArrayList<>();
             googleMap.clear();
             for (Evenement e : mEvenements) {
                 LatLng marker = new LatLng(e.getLieu().getLatitude(), e.getLieu().getLongitude());
-                //System.out.println("lat: " + e.getLieu().getLatitude());
-                googleMap.addMarker(new MarkerOptions().position(marker).title(e.getTitre()));
+                MarkerOptions options = new MarkerOptions().position(marker).title(e.getTitre());
+                EvenementsActivity activity = (EvenementsActivity) getActivity();
+                if (activity.isFavorite(e)){
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                            .zIndex(1.0f);
+                    mFavorites.add(googleMap.addMarker(options));
+                }
+                else {
+                    mMarkers.add(googleMap.addMarker(options));
+                }
+
+
             }
         }
-
 
     }
 

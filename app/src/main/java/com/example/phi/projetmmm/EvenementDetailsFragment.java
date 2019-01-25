@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -107,15 +108,35 @@ public class EvenementDetailsFragment extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item=menu.findItem(R.id.action_fav);
         item.setVisible(true);
+        EvenementsActivity evenementsActivity = (EvenementsActivity) getActivity();
+
+        if (evenementsActivity.isFavorite(mEvenement)){
+            item.setIcon(ContextCompat.getDrawable(getActivity(), R.drawable.star));
+
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+
+                    EvenementsActivity evenementsActivity = (EvenementsActivity) getActivity();
+                    if (evenementsActivity != null){
+                        Toast.makeText(getActivity(),"Retiré des favoris",Toast.LENGTH_LONG).show();
+                        evenementsActivity.deleteEvenement(mEvenement);
+                    }
+
+                    return false;
+                }
+            });
+
+            return;
+        }
+
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                /*String text= (mEvenement != null ) ? mEvenement.getTitre() : "even null";
-                Toast.makeText(getActivity(),text,Toast.LENGTH_LONG).show();*/
 
                 EvenementsActivity evenementsActivity = (EvenementsActivity) getActivity();
                 if (evenementsActivity != null){
-                    //evenementsActivity.setRating(mEvenement);
+                    Toast.makeText(getActivity(),"Ajouté aux favoris",Toast.LENGTH_LONG).show();
                     evenementsActivity.insertEvenement(mEvenement);
                 }
 

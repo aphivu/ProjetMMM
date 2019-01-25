@@ -29,4 +29,14 @@ public class EvenementViewModel extends AndroidViewModel {
     public void insert(Evenement evenement){
         mRepository.insert(evenement);
     }
+    public void delete(Evenement evenement) { mRepository.delete(evenement); }
+
+    public Boolean isPresent(Evenement evenement){
+        for(Evenement e : mEvenements.getValue()){
+            if (e.getKey().equals(evenement.getKey())){
+                return true;
+            }
+        }
+        return false;
+    }
 }

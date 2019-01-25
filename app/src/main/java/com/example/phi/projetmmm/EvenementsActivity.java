@@ -119,7 +119,7 @@ public class EvenementsActivity extends AppCompatActivity
         containerEvenement.setArguments(args);
         profilFragment = new ProfilFragment();
         mapFragment = new MapFragment();
-       // mapFragment.setArguments(args);
+        mapFragment.setArguments(args);
 
         adapter.addFragment(profilFragment,"Profil");
         adapter.addFragment(containerEvenement,"Evènements");
@@ -214,14 +214,6 @@ public class EvenementsActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
-            case R.id.action_fav:
-                /*Evenement addFav = containerEvenement.getEvenement();
-                System.out.println("FAV IS CLICKED : ");
-                if(addFav != null){
-                    insertEvenement(addFav);
-                }*/
-                return true;
 
             case R.id.logout_action:
 

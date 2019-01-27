@@ -12,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -52,7 +54,9 @@ public class ProfilFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -65,7 +69,7 @@ public class ProfilFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new ProfilAdapter(new ArrayList<Evenement>());
+        mAdapter = new ProfilAdapter(new ArrayList<Evenement>(),mListener);
 
         mViewModel = ViewModelProviders.of(getActivity()).get(EvenementViewModel.class);
         mViewModel.getEvenements().observe(this, new Observer<List<Evenement>>() {
@@ -81,11 +85,6 @@ public class ProfilFragment extends Fragment {
     }
 
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -104,10 +103,16 @@ public class ProfilFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_fav);
+        item.setVisible(false);
+    }
+
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
+        void onFragmentInteraction(Evenement evenement);
     }
 
     public void insert(Evenement evenement){

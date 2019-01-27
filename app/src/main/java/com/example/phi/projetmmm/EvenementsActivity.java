@@ -162,8 +162,9 @@ public class EvenementsActivity extends AppCompatActivity
 
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onFragmentInteraction(Evenement evenement) {
+        //Toast.makeText(this,evenement.getTitre(),Toast.LENGTH_LONG).show();
+        setViewPager(evenement.getTitre());
     }
 
     @Override

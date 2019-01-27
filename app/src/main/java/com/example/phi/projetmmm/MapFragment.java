@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -71,9 +73,7 @@ public class MapFragment extends Fragment implements
         super.onCreate(savedInstanceState);
 
         mEvenements = new ArrayList<>();
-
-
-
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -240,6 +240,12 @@ public class MapFragment extends Fragment implements
                 return;
 
         }
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_fav);
+        item.setVisible(false);
     }
 
     private void displayUnFav(){

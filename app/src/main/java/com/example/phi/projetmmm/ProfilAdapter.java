@@ -16,9 +16,11 @@ import butterknife.ButterKnife;
 public class ProfilAdapter extends RecyclerView.Adapter<ProfilAdapter.ProfilViewHolder> {
 
     private List<Evenement> mEvenements;
+    private ProfilFragment.OnFragmentInteractionListener mListener;
 
     public static class ProfilViewHolder extends RecyclerView.ViewHolder {
         public View mView;
+        public Evenement mEvenement;
         @BindView(R.id.card_text) TextView mCardText;
 
         public ProfilViewHolder(View v){
@@ -28,8 +30,10 @@ public class ProfilAdapter extends RecyclerView.Adapter<ProfilAdapter.ProfilView
         }
     }
 
-    public ProfilAdapter(List<Evenement> evenements){
+    public ProfilAdapter(List<Evenement> evenements,
+                         ProfilFragment.OnFragmentInteractionListener listener){
         mEvenements = evenements;
+        mListener = listener;
     }
 
     @Override
@@ -44,11 +48,24 @@ public class ProfilAdapter extends RecyclerView.Adapter<ProfilAdapter.ProfilView
     }
 
     @Override
-    public void onBindViewHolder(ProfilViewHolder holder, int position) {
+    public void onBindViewHolder(final ProfilViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //holder.mView.setText(mEvenements.get(position).getTitre());
-        holder.mCardText.setText(mEvenements.get(position).getTitre());
+        holder.mEvenement = mEvenements.get(position);
+        holder.mCardText.setText(holder.mEvenement.getTitre());
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mListener) {
+                    // Notify the active callbacks interface (the activity, if the
+                    // fragment is attached to one) that an item has been selected.
+                    mListener.onFragmentInteraction(holder.mEvenement);
+                }
+            }
+        });
+
     }
 
     @Override

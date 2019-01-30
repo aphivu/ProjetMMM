@@ -155,9 +155,5 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-    public void login(View view){
-
-
-    }
 
 }
